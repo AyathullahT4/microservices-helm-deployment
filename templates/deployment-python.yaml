@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api-python
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "ms.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.python.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-api-python
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-api-python
+    spec:
+      containers:
+      - name: api-python
+        image: "{{ .Values.python.image.repository }}:{{ .Values.python.image.tag }}"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.python.containerPort }}
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.python.containerPort }}
+          initialDelaySeconds: 2
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.python.containerPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          {{- toYaml .Values.python.resources | nindent 10 }}

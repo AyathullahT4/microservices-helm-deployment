@@ -1,0 +1,6 @@
+apiVersion: v2
+name: microservices-helm-deployment
+description: Helm chart packaging for Node.js + Python services with ingress routing
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

@@ -1,0 +1,11 @@
+imagePullPolicy: Never
+
+node:
+  image:
+    repository: api-node
+    tag: v0.1.0
+
+python:
+  image:
+    repository: api-python
+    tag: v0.1.0
